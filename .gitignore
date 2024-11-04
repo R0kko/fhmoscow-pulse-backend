@@ -13,8 +13,6 @@ pids
 *.pid
 *.seed
 *.pid.lock
-*.csv
-*.sqlite
 
 # Dependency directories
 jspm_packages/
@@ -48,14 +46,15 @@ coverage/
 
 # Docker
 docker-compose.override.yml
-Dockerfile*
-docker-compose.yml
 
 # macOS
 .DS_Store
 
 # Linux
 *.swp
+*.swo
+*.swn
+*.swm
 
 # Miscellaneous
 *.sublime-workspace
@@ -65,16 +64,6 @@ docker-compose.yml
 __pycache__/
 *.pyc
 .cache/
-logs/
-logs/*
-*.swo
-*.swn
-*.swm
-.tern-port
-.replit/
-firebase-debug.log
-yarn.lock
-.pnpm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
@@ -82,19 +71,12 @@ yarn.lock
 # Ignored by npm
 *.tgz
 package-lock.json
-.editorconfig
-.eslintcache
-prettier.config.js
-prettier.config.cjs
-.prettierrc*
-.eslintrc.json
-.eslintrc.js
-.eslintrc.yaml
-.eslintrc.yml
-tsconfig.json
-tsconfig.tsbuildinfo
 
 # Optional npm cache directories
 .npm/
 .nvm/
 .nodenv/
+.pnpm-debug.log*
+
+# Optional Yarn cache directories
+.yarn/
