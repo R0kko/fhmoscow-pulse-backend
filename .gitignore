@@ -70,7 +70,6 @@ __pycache__/
 
 # Ignored by npm
 *.tgz
-package-lock.json
 
 # Optional npm cache directories
 .npm/
