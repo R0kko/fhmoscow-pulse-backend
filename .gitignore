@@ -1,0 +1,100 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+logs/*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+*.csv
+*.sqlite
+
+# Dependency directories
+jspm_packages/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+tmp/
+temp/
+
+# Static bundle files (webpack, parcel, etc.)
+*.js.map
+*.css.map
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Testing and CI directories
+.nyc_output/
+.jest/
+
+# WebStorm and JetBrains IDE settings
+.idea/
+*.iml
+
+# Docker
+docker-compose.override.yml
+Dockerfile*
+docker-compose.yml
+
+# macOS
+.DS_Store
+
+# Linux
+*.swp
+
+# Miscellaneous
+*.sublime-workspace
+*.sublime-project
+.vscode/
+.vscode-test/
+__pycache__/
+*.pyc
+.cache/
+logs/
+logs/*
+*.swo
+*.swn
+*.swm
+.tern-port
+.replit/
+firebase-debug.log
+yarn.lock
+.pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Ignored by npm
+*.tgz
+package-lock.json
+.editorconfig
+.eslintcache
+prettier.config.js
+prettier.config.cjs
+.prettierrc*
+.eslintrc.json
+.eslintrc.js
+.eslintrc.yaml
+.eslintrc.yml
+tsconfig.json
+tsconfig.tsbuildinfo
+
+# Optional npm cache directories
+.npm/
+.nvm/
+.nodenv/
