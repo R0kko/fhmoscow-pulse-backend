@@ -1,5 +1,5 @@
-'use strict'
-const { DataTypes } = require('sequelize')
+'use strict';
+const { DataTypes } = require('sequelize');
 
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -18,24 +18,24 @@ module.exports = {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            created_at: {
+            createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             },
-            updated_at: {
+            updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
             },
-            deleted_at: {
+            deletedAt: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-        })
+        });
     },
 
     async down(queryInterface) {
-        await queryInterface.dropTable('roles')
+        await queryInterface.dropTable('roles');
     },
-}
+};

@@ -1,18 +1,19 @@
-'use strict';
 const { DataTypes } = require('sequelize');
 
-module.exports = {
-    async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('user_roles', {
+module.exports = (sequelize) => {
+    const UserRole = sequelize.define(
+        'UserRole',
+        {
             id: {
                 type: DataTypes.UUID,
-                defaultValue: Sequelize.literal('uuid_generate_v4()'),
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
             user_id: {
                 type: DataTypes.UUID,
+                allowNull: false,
                 references: {
-                    model: 'users',
+                    model: 'User',
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -20,8 +21,9 @@ module.exports = {
             },
             role_id: {
                 type: DataTypes.UUID,
+                allowNull: false,
                 references: {
-                    model: 'roles',
+                    model: 'Role', // Название модели для связи
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -30,21 +32,28 @@ module.exports = {
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             deletedAt: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-        });
-    },
+        },
+        {
+            tableName: 'user_roles',
+            paranoid: true,
+        }
+    );
 
-    async down(queryInterface) {
-        await queryInterface.dropTable('user_roles');
-    },
+    UserRole.associate = (models) => {
+        UserRole.belongsTo(models.User, { foreignKey: 'user_id' });
+        UserRole.belongsTo(models.Role, { foreignKey: 'role_id' });
+    };
+
+    return UserRole;
 };

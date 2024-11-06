@@ -1,12 +1,12 @@
-'use strict';
 const { DataTypes } = require('sequelize');
 
-module.exports = {
-    async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('api_keys', {
+module.exports = (sequelize) => {
+    const ApiKey = sequelize.define(
+        'ApiKey',
+        {
             id: {
                 type: DataTypes.UUID,
-                defaultValue: Sequelize.literal('uuid_generate_v4()'),
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
             key: {
@@ -24,8 +24,9 @@ module.exports = {
             },
             user_id: {
                 type: DataTypes.UUID,
+                allowNull: true,
                 references: {
-                    model: 'users',
+                    model: 'User', // название модели, на которую ссылается внешний ключ
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -34,21 +35,28 @@ module.exports = {
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             deletedAt: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-        });
-    },
+        },
+        {
+            tableName: 'api_keys',
+            paranoid: true, // включает мягкое удаление
+        }
+    );
 
-    async down(queryInterface) {
-        await queryInterface.dropTable('api_keys');
-    },
+    // Настройка ассоциаций
+    ApiKey.associate = (models) => {
+        ApiKey.belongsTo(models.User, { foreignKey: 'user_id' });
+    };
+
+    return ApiKey;
 };

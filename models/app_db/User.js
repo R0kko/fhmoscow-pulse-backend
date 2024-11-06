@@ -1,12 +1,12 @@
-'use strict';
 const { DataTypes } = require('sequelize');
 
-module.exports = {
-    async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('users', {
+module.exports = (sequelize) => {
+    const User = sequelize.define(
+        'User',
+        {
             id: {
                 type: DataTypes.UUID,
-                defaultValue: Sequelize.literal('uuid_generate_v4()'),
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
             last_name: {
@@ -36,8 +36,9 @@ module.exports = {
             },
             user_status_id: {
                 type: DataTypes.UUID,
+                allowNull: true,
                 references: {
-                    model: 'user_statuses',
+                    model: 'UserStatus', // название модели для связи
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -46,21 +47,33 @@ module.exports = {
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             deletedAt: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-        });
-    },
+        },
+        {
+            tableName: 'users',
+            paranoid: true,
+        }
+    );
 
-    async down(queryInterface) {
-        await queryInterface.dropTable('users');
-    },
+    // Настройка связей модели
+    User.associate = (models) => {
+        User.belongsTo(models.UserStatus, { foreignKey: 'user_status_id' });
+        User.belongsToMany(models.Role, {
+            through: models.UserRole,
+            foreignKey: 'user_id',
+            otherKey: 'role_id',
+        });
+    };
+
+    return User;
 };

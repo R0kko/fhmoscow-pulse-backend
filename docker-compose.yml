@@ -9,7 +9,7 @@ services:
             db:
                 condition: service_healthy
         command: >
-            sh -c "npx sequelize-cli db:migrate && npm start"
+            sh -c "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start"
 
     db:
         image: postgres:17

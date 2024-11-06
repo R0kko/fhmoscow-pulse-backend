@@ -1,15 +1,12 @@
-'use strict';
 const { DataTypes } = require('sequelize');
 
-module.exports = {
-    async up(queryInterface, Sequelize) {
-        await queryInterface.sequelize.query(
-            'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
-        );
-        await queryInterface.createTable('user_statuses', {
+module.exports = (sequelize) => {
+    const Role = sequelize.define(
+        'Role',
+        {
             id: {
                 type: DataTypes.UUID,
-                defaultValue: Sequelize.literal('uuid_generate_v4()'),
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
             alias: {
@@ -24,24 +21,31 @@ module.exports = {
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+                defaultValue: DataTypes.NOW,
             },
             deletedAt: {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-        });
-    },
+        },
+        {
+            tableName: 'roles',
+            paranoid: true,
+        }
+    );
 
-    async down(queryInterface) {
-        await queryInterface.dropTable('user_statuses');
-        await queryInterface.sequelize.query(
-            'DROP EXTENSION IF EXISTS "uuid-ossp";'
-        );
-    },
+    Role.associate = (models) => {
+        Role.belongsToMany(models.User, {
+            through: models.UserRole,
+            foreignKey: 'role_id',
+            otherKey: 'user_id',
+        });
+    };
+
+    return Role;
 };
