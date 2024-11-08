@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
                 type: DataTypes.UUID,
                 allowNull: true,
                 references: {
-                    model: 'User', // название модели, на которую ссылается внешний ключ
+                    model: 'User',
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -49,11 +49,10 @@ module.exports = (sequelize) => {
         },
         {
             tableName: 'api_keys',
-            paranoid: true, // включает мягкое удаление
+            paranoid: true,
         }
     );
 
-    // Настройка ассоциаций
     ApiKey.associate = (models) => {
         ApiKey.belongsTo(models.User, { foreignKey: 'user_id' });
     };

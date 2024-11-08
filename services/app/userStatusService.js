@@ -1,4 +1,4 @@
-const app_db = require('../models/app_db');
+const app_db = require('../../models/app_db');
 
 const getUserStatusAlias = async (userStatusId) => {
     const userStatus = await app_db.UserStatus.findByPk(userStatusId, {

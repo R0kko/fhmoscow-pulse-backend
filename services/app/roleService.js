@@ -1,4 +1,4 @@
-const app_db = require('../models/app_db');
+const app_db = require('../../models/app_db');
 
 const getUserRoles = async (userId) => {
     const user = await app_db.User.findByPk(userId, {

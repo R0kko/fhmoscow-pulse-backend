@@ -1,4 +1,3 @@
-// models/app_db/index.js
 'use strict';
 
 const fs = require('fs');
@@ -6,8 +5,10 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(path.resolve(__dirname, '../../config/config.js'))[env];
-const app_db = {};
+const config = require(path.resolve(__dirname, '../../config/config.js'))[
+    `${env}_maria`
+];
+const prod_db = {};
 
 let sequelize;
 if (config.use_env_variable) {
@@ -21,7 +22,7 @@ if (config.use_env_variable) {
     );
 }
 
-// Загружаем все модели
+// Чтение и подключение всех файлов моделей из текущей директории
 fs.readdirSync(__dirname)
     .filter((file) => {
         return (
@@ -36,17 +37,17 @@ fs.readdirSync(__dirname)
             sequelize,
             Sequelize.DataTypes
         );
-        app_db[model.name] = model;
+        prod_db[model.name] = model;
     });
 
-// Устанавливаем ассоциации после инициализации всех моделей
-Object.keys(app_db).forEach((modelName) => {
-    if (app_db[modelName].associate) {
-        app_db[modelName].associate(app_db);
+// Установка ассоциаций для каждой модели после загрузки всех моделей
+Object.keys(prod_db).forEach((modelName) => {
+    if (prod_db[modelName].associate) {
+        prod_db[modelName].associate(prod_db);
     }
 });
 
-app_db.sequelize = sequelize;
-app_db.Sequelize = Sequelize;
+prod_db.sequelize = sequelize;
+prod_db.Sequelize = Sequelize;
 
-module.exports = app_db;
+module.exports = prod_db;

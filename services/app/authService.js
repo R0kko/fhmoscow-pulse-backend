@@ -1,9 +1,9 @@
-const app_db = require('../models/app_db');
+const app_db = require('../../models/app_db');
 const roleService = require('./roleService');
 const userStatusService = require('./userStatusService');
 
-const { generateToken, comparePassword } = require('../utils/authUtils');
-const { sanitizeUser } = require('../utils/userUtils');
+const { generateToken, comparePassword } = require('../../utils/authUtils');
+const { sanitizeUser } = require('../../utils/userUtils');
 
 const login = async (email, password) => {
     const user = await app_db.User.findOne({ where: { email } });

@@ -73,6 +73,10 @@ module.exports = (sequelize) => {
             foreignKey: 'user_id',
             otherKey: 'role_id',
         });
+        User.hasMany(models.ApiKey, {
+            foreignKey: 'user_id',
+            onDelete: 'SET NULL',
+        });
     };
 
     return User;
