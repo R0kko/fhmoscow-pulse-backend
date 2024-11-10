@@ -1,15 +1,18 @@
 /**
- * Форматирует данные турнирной таблицы, разделяя информацию о команде и статистику
- * @param {Array} tournamentData - Сырые данные турнирной таблицы с включением команды
- * @returns {Array} - Отформатированные данные с раздельной информацией по команде и статистике
+ * Форматирует данные турнирной таблицы, разделяя информацию о команде и статистику.
+ * @param {Array} tournamentData - Сырые данные турнирной таблицы с включением команды и клуба.
+ * @returns {Array} - Отформатированные данные с раздельной информацией по команде и статистике.
  */
 const formatTournamentTableData = (tournamentData) => {
     return tournamentData.map((entry) => {
+        const team = entry.Team;
+        const club = team?.Club;
+
         return {
-            team: {
-                id: entry.Team.id,
-                name: entry.Team.short_name,
-                year: entry.Team.year,
+            club: {
+                team_id: team.id,
+                name: club?.short_name || 'Unknown Club',
+                year: team.year,
             },
             tournament_table: {
                 game_count: entry.game_count,

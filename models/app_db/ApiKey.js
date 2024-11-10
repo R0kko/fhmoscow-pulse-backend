@@ -15,11 +15,11 @@ module.exports = (sequelize) => {
                 unique: true,
             },
             active_from: {
-                type: DataTypes.DATE,
+                type: DataTypes.DATEONLY,
                 allowNull: false,
             },
             active_to: {
-                type: DataTypes.DATE,
+                type: DataTypes.DATEONLY,
                 allowNull: false,
             },
             user_id: {

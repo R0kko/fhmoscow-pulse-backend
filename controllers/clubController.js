@@ -1,4 +1,4 @@
-const clubService = require('../../services/prod/clubService');
+const clubService = require('../services/prod/clubService');
 
 const getAllClubs = async (req, res) => {
     try {

@@ -1,4 +1,4 @@
-const teamService = require('../../services/prod/teamService');
+const teamService = require('../services/prod/teamService');
 
 const getAllTeams = async (req, res) => {
     try {

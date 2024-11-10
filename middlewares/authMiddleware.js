@@ -5,7 +5,7 @@ const authMiddleware = (req, res, next) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res
             .status(401)
-            .json({ status: 'error', message: 'Unauthorized' });
+            .json({ status: 'error', message: 'Ошибка авторизации' });
     }
 
     const token = authHeader.split(' ')[1];
@@ -13,7 +13,10 @@ const authMiddleware = (req, res, next) => {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
         next();
     } catch {
-        res.status(401).json({ status: 'error', message: 'Invalid token' });
+        res.status(401).json({
+            status: 'error',
+            message: 'Некорректный токен',
+        });
     }
 };
 

@@ -7,6 +7,12 @@ module.exports = {
         database: process.env.POSTGRES_DB,
         host: 'db',
         dialect: 'postgres',
+        pool: {
+            max: 10, // Максимальное количество соединений в пуле для PostgreSQL
+            min: 1,
+            acquire: 30000,
+            idle: 10000,
+        },
     },
     production: {
         username: process.env.POSTGRES_USER,
@@ -14,6 +20,12 @@ module.exports = {
         database: process.env.POSTGRES_DB,
         host: 'db',
         dialect: 'postgres',
+        pool: {
+            max: 10,
+            min: 1,
+            acquire: 30000,
+            idle: 10000,
+        },
     },
     development_maria: {
         username: process.env.MARIA_DB_USER,
@@ -24,6 +36,12 @@ module.exports = {
         dialectOptions: {
             allowPublicKeyRetrieval: true,
         },
+        pool: {
+            max: 3, // Ограниченное количество соединений для MariaDB
+            min: 1,
+            acquire: 30000,
+            idle: 10000,
+        },
     },
     production_maria: {
         username: process.env.MARIA_DB_USER,
@@ -31,5 +49,11 @@ module.exports = {
         database: process.env.MARIA_DB_NAME,
         host: process.env.MARIA_DB_HOST || 'mariadb',
         dialect: 'mariadb',
+        pool: {
+            max: 3,
+            min: 1,
+            acquire: 30000,
+            idle: 10000,
+        },
     },
 };

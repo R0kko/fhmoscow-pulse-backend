@@ -4,13 +4,39 @@ const logger = require('morgan');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swaggerConfig');
 const indexRouter = require('./routes');
 const errorHandler = require('./utils/errorHandler');
+const postgresDb = require('./models/app_db');
+const mariaDb = require('./models/prod_db');
+const requestLogger = require('./middlewares/requestLogger');
 
 const app = express();
 
+// Проверка подключений к базам данных при старте
+const initializeDatabases = async () => {
+    try {
+        await postgresDb.sequelize.authenticate();
+        console.log('PostgreSQL connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to PostgreSQL:', error);
+    }
+
+    try {
+        await mariaDb.sequelize.authenticate();
+        console.log('MariaDB connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to MariaDB:', error);
+    }
+};
+
+initializeDatabases();
+
 // Логирование запросов
 app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+
+app.use(requestLogger);
 
 // Настройка CORS
 const corsOptions = {
@@ -22,7 +48,7 @@ app.use(cors(corsOptions));
 
 // Ограничение на количество запросов
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
+    windowMs: 60 * 1000,
     max: 100,
 });
 app.use(limiter);
@@ -42,6 +68,7 @@ app.use(helmet.xssFilter());
 
 // Подключение маршрутов API
 app.use('/api', indexRouter);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Обработка 404 ошибок
 app.use((req, res) => {
