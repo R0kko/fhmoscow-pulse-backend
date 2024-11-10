@@ -10,12 +10,12 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:3000',
-            description: 'Локальный сервер',
-        },
-        {
             url: 'https://pulse-backend.fhmoscow.com',
             description: 'Продакшен сервер',
+        },
+        {
+            url: 'http://localhost:3000',
+            description: 'Локальный сервер',
         },
     ],
     components: {
