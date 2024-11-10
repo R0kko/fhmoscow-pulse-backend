@@ -14,7 +14,7 @@ const swaggerDefinition = {
             description: 'Локальный сервер',
         },
         {
-            url: 'http://pulse-backend.fhmoscow.com',
+            url: 'https://pulse-backend.fhmoscow.com',
             description: 'Продакшен сервер',
         },
     ],
