@@ -13,7 +13,8 @@ const requestLogger = async (req, res, next) => {
                 status,
                 response_time: responseTime,
                 error,
-                ip_address: req.ip,
+                ip_address:
+                    req.headers['x-real-ip'] || req.connection.remoteAddress,
                 headers: req.headers,
                 api_key: req.headers['x-api-key'],
                 body: req.body,
