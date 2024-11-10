@@ -14,7 +14,8 @@ const requestLogger = require('./middlewares/requestLogger');
 
 const app = express();
 
-// Проверка подключений к базам данных при старте
+app.set('trust proxy', 1);
+
 const initializeDatabases = async () => {
     try {
         await postgresDb.sequelize.authenticate();
@@ -38,12 +39,12 @@ app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 app.use(requestLogger);
 
-// Настройка CORS
 const corsOptions = {
     origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'],
 };
+
 app.use(cors(corsOptions));
 
 // Ограничение на количество запросов
