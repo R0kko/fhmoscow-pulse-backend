@@ -5,7 +5,7 @@ module.exports = {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        host: 'db',
+        host: process.env.POSTGRES_HOST || 'db',
         dialect: 'postgres',
         pool: {
             max: 10, // Максимальное количество соединений в пуле для PostgreSQL
@@ -18,7 +18,7 @@ module.exports = {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        host: 'db',
+        host: process.env.POSTGRES_HOST || 'db',
         dialect: 'postgres',
         pool: {
             max: 10,
