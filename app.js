@@ -14,7 +14,7 @@ const requestLogger = require('./middlewares/requestLogger');
 
 const app = express();
 
-app.set('trust proxy', 1);
+app.set('trust proxy', 2);
 
 const initializeDatabases = async () => {
     try {
@@ -41,7 +41,7 @@ app.use(requestLogger);
 
 const corsOptions = {
     origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'],
 };
 
