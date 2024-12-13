@@ -4,33 +4,58 @@ const userStatusService = require('./userStatusService');
 
 const { generateToken, comparePassword } = require('../../utils/authUtils');
 const { sanitizeUser } = require('../../utils/userUtils');
+const logger = require('../../utils/logger');
 
+/**
+ * Аутентификация пользователя и генерация токена
+ * @param {string} email - Электронная почта пользователя
+ * @param {string} password - Пароль пользователя
+ * @returns {Promise<object>} - Токен, данные пользователя и роли
+ * @throws {Error} - Если пользователь не найден или учетные данные неверны
+ */
 const login = async (email, password) => {
-    const user = await app_db.User.findOne({ where: { email } });
+    try {
+        // Поиск пользователя
+        const user = await app_db.User.findOne({ where: { email } });
+        if (!user) {
+            logger.warn(
+                `Попытка входа: пользователь с email ${email} не найден`
+            );
+            throw new Error('Invalid credentials'); // Единый ответ для защиты от утечек
+        }
 
-    if (!user) throw new Error('User not found');
+        // Проверка пароля
+        const isMatch = await comparePassword(password, user.password);
+        if (!isMatch) {
+            logger.warn(
+                `Попытка входа: неверный пароль для пользователя ${email}`
+            );
+            throw new Error('Invalid credentials');
+        }
 
-    // Проверка пароля
-    const isMatch = await comparePassword(password, user.password);
-    if (!isMatch) throw new Error('Invalid credentials');
+        // Генерация токена
+        const token = generateToken({ userId: user.id });
 
-    // Генерация токена
-    const token = generateToken(user);
+        // Получение ролей пользователя
+        const roles = await roleService.getUserRoles(user.id);
 
-    // Получение ролей пользователя через RoleService
-    const roles = await roleService.getUserRoles(user.id);
+        // Получение alias статуса пользователя
+        const userStatusAlias = await userStatusService.getUserStatusAlias(
+            user.user_status_id
+        );
 
-    // Получение alias статуса пользователя через UserStatusService
-    const userStatusAlias = await userStatusService.getUserStatusAlias(
-        user.user_status_id
-    );
+        // Форматируем данные пользователя
+        const userData = sanitizeUser(user);
+        userData.user_status = userStatusAlias;
+        delete userData.user_status_id;
 
-    const userData = sanitizeUser(user);
+        logger.info(`Пользователь ${email} успешно аутентифицирован`);
 
-    userData.user_status = userStatusAlias;
-    delete userData.user_status_id;
-
-    return { token, user: userData, roles };
+        return { token, user: userData, roles };
+    } catch (error) {
+        logger.error(`Ошибка аутентификации: ${error.message}`, { email });
+        throw error;
+    }
 };
 
 module.exports = {

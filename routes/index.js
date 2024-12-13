@@ -29,17 +29,25 @@ const router = express.Router();
 const apiKeyValidator = require('../middlewares/apiKeyValidator');
 
 const authRoutes = require('./authRoutes');
+const userRouter = require('./userRouter');
 const clubRouter = require('./clubRouter');
 const teamRouter = require('./teamRouter');
 const groupRouter = require('./groupRouter');
 const tournamentRouter = require('./tournamentRouter');
 const tournamentTableRouter = require('./tournamentTableRouter');
 const seasonRouter = require('./seasonRouter');
+const passportRouter = require('./passportRoutes');
+const addressRouter = require('./addressRouter');
+const bankRequisitesRouter = require('./bankRequisitesRouter');
 
 // Подключение маршрутов с описанием
 router.use('/auth', authRoutes);
+router.use('/user', userRouter);
+router.use('/address', addressRouter);
 router.use('/clubs', apiKeyValidator, clubRouter);
 router.use('/teams', apiKeyValidator, teamRouter);
+router.use('/passport', passportRouter);
+router.use('/bank-requisites', bankRequisitesRouter);
 router.use('/groups', apiKeyValidator, groupRouter);
 router.use('/tournaments', apiKeyValidator, tournamentRouter);
 router.use('/tournament-table', apiKeyValidator, tournamentTableRouter);

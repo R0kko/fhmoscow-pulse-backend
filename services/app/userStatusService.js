@@ -11,6 +11,19 @@ const getUserStatusAlias = async (userStatusId) => {
     return userStatus.alias;
 };
 
+const getUserStatusIdByAlias = async (alias) => {
+    const userStatus = await app_db.UserStatus.findOne({
+        where: { alias },
+        attributes: ['id'],
+    });
+
+    if (!userStatus)
+        throw new Error(`UserStatus with alias ${alias} not found`);
+
+    return userStatus.id;
+};
+
 module.exports = {
     getUserStatusAlias,
+    getUserStatusIdByAlias,
 };
